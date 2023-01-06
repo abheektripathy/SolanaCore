@@ -9,7 +9,7 @@ import * as web3 from '@solana/web3.js'
 const Home: NextPage = () => {
   const [balance, setBalance] = useState(0)
   const [address, setAddress] = useState('')
-  const [exec, setExec] = useState('')
+  const [exec, setExec] = useState(false)
 
   const addressSubmittedHandler = (address: string) => {
    try {
@@ -42,17 +42,22 @@ const Home: NextPage = () => {
 const execornot = async (address:string) => {
   
   const key2 = new web3.PublicKey(address);
-  setExec(address)
+  
   const connection2 = new web3.Connection(web3.clusterApiUrl('devnet'))
   
   const resp = connection2.getAccountInfo(key2)
-  console.log(resp)
-resp.then((executable)=>{{
-  if (executable === null) {
-    console.log("Account does not exist")}
-  console.log("Account exists")
+  const data = await resp.then((data)=>{
+    const oka  = data?.executable
+    setExec(//@ts-ignore
+      data?.executable)
+    console.log(oka)
+    return data?.executable
 
-}})
+  })
+
+
+
+
   
 }
 
@@ -69,7 +74,8 @@ resp.then((executable)=>{{
         <AddressForm handler={addressSubmittedHandler} />
         <p>{`Address: ${address}`}</p>
         <p>{`Balance: ${balance} SOL`}</p>
-        <button onClick={() => execornot(address)}>Execute</button>
+        <button onClick={() => execornot(address)}>executee</button>
+        <p></p>
       </header>
     </div>
   )
