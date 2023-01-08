@@ -2,10 +2,6 @@
 putting all my enhancements and assignments from solana core here. cc buildspace :)
 
 
-# SolanaCore
-
-cc _buildspace
-
 okay so how transactions work in general- 
 
 you have your basic- `pub key, pvt key`
