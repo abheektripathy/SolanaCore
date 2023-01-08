@@ -11,6 +11,22 @@ const Home: NextPage = () => {
   const [address, setAddress] = useState('')
   const [exec, setExec] = useState(false)
 
+
+  const keypairmera = web3.Keypair.generate()
+  console.log(keypairmera.publicKey.toBase58())
+
+  const keypairtera = web3.Keypair.generate()
+
+
+  const Transac = new web3.Transaction()
+
+  const sendSol = web3.SystemProgram.transfer( {
+    fromPubkey: keypairmera.publicKey,
+    toPubkey: keypairtera.publicKey,
+    lamports: 100000
+    
+  })
+
   const addressSubmittedHandler = (address: string) => {
    try {
     const key = new web3.PublicKey(address);
