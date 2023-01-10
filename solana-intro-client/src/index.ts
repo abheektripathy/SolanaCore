@@ -29,9 +29,9 @@ async function initializekeypair(connection: Web3.Connection): Promise<Web3.Keyp
 }
 
 async function Airdropifbroke( // just a way of defining parameters
-    signer: Web3.Keypair, connection: Web3.Connection) {
+    signer: Web3.PublicKey, connection: Web3.Connection) {
 
-        const balance = await connection.getBalance(signer.publicKey);
+        const balance = await connection.getBalance(signer);
         console.log("Balance: ", balance/Web3.LAMPORTS_PER_SOL, 'SOL');
         //balance check krega 
 
@@ -40,7 +40,7 @@ async function Airdropifbroke( // just a way of defining parameters
             
             //this is the sig, which requests the airsrop
             const airdropSignature = await connection.requestAirdrop(
-                signer.publicKey,
+                signer,
                 1*Web3.LAMPORTS_PER_SOL
             );
 
@@ -54,7 +54,7 @@ async function Airdropifbroke( // just a way of defining parameters
                 signature: airdropSignature
             });
 
-            const newBalance = await connection.getBalance(signer.publicKey);
+            const newBalance = await connection.getBalance(signer);
             console.log('New balance is 🎉', newBalance / Web3.LAMPORTS_PER_SOL, 'SOL');
            
         } else{
@@ -127,17 +127,18 @@ async function sendSol(connection : Web3.Connection, amount: number, to: Web3.Pu
 async function main() {
     const connection = new Web3.Connection(Web3.clusterApiUrl('devnet'))
     //devnet pe connect ho rha
-    const keypair = await initializekeypair(connection);
+    //const keypair = await initializekeypair(connection);
     //keypair generate mere func se
-    console.log("Public key: ", keypair.publicKey.toBase58());
+    //console.log("Public key: ", keypair.publicKey.toBase58());
     //generated keypair aur connection ka use karke rpc calls via we talked to the nodes.
-    //await Airdropifbroke(keypair, connection);
+    const pubb = new Web3.PublicKey('651yky3ijgSPyPZ8L5s1izSbnh5xDHb4GSATk8JLbzsK')
+    await Airdropifbroke(pubb, connection);
 
-    const transferkeypair =  Web3.Keypair.generate()
-    console.log(transferkeypair.publicKey.toBase58)
+    //const transferkeypair =  Web3.Keypair.generate()
+    //console.log(transferkeypair.publicKey.toBase58)
 
     //await ping(connection, keypair);
-    await sendSol(connection, 0.1,transferkeypair.publicKey, keypair)
+    //await sendSol(connection, 0.1,transferkeypair.publicKey, keypair)
 }
 
 
